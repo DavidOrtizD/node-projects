@@ -1,4 +1,5 @@
-const getlocationCoords = require('./location/location').getLocationCoords;
+const getLocationCoords = require('./location/location').getLocationCoords;
+const getWeather = require('./weather/weather').getWeather;
 const argv = require('yargs').options({
     location: {
         alias: 'l',
@@ -7,6 +8,18 @@ const argv = require('yargs').options({
     }
 }).argv;
 
-console.log(argv.location);
 
-getlocationCoords(argv.location);
+/* Self Called method to use async and await */
+(async ()=>{
+    try {
+        const locationData = await getLocationCoords(argv.location);
+        if(locationData){
+            const weather = await getWeather(locationData.data.coord.lat, locationData.data.coord.lon);
+            console.log(`The weather in ${locationData.data.name} is ${weather}`);
+        }    
+    }
+    catch(err) {
+        console.error(`Sorry we could not get the wheater of ${argv.location}`);
+    }
+    
+})();

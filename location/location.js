@@ -9,10 +9,10 @@ const getLocationCoords = async (location) => {
 
     try{
         const response = await instance.get();
-        console.log(response);
+        return response;
     } catch(error) {
-        // throw new Error(error.data);
-        console.log(error.response.data);
+        // console.log(error.response.data);
+        throw new Error(error.response.data);
     }
 };
 
